@@ -1,0 +1,19 @@
+{
+  "name": "rabbit-and-pig",
+  "version": "1.0.0",
+  "description": "Rabbit and pig",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisXJH/rabbit-and-pig.git"
+  },
+  "author": "Rabbit and Pig",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrisXJH/rabbit-and-pig/issues"
+  },
+  "homepage": "https://github.com/ChrisXJH/rabbit-and-pig#readme"
+}
