@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const gomoku = require('./games/gomoku');
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.json());
-app.use((req, res, next) => {
+const logger = (req, res, next) => {
   const requestData = {
     method: req.method,
     url: req.url,
@@ -17,7 +17,11 @@ app.use((req, res, next) => {
   console.log(JSON.stringify(requestData));
 
   next();
-});
+};
+
+app.use(cors());
+app.use(bodyParser.json());
+// app.use(logger);
 
 app.use('/gomoku', gomoku);
 

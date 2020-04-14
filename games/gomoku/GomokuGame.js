@@ -2,8 +2,9 @@ const Gomoku = require('gomoku-js');
 
 class GomokuGame {
   constructor(id) {
+    this.dimension = 19;
     this.id = id;
-    this.theGame = new Gomoku(19);
+    this.theGame = new Gomoku(this.dimension);
     this.winner = null;
     this.player1 = 1;
     this.player2 = 2;
@@ -17,6 +18,7 @@ class GomokuGame {
     return {
       winner: this.winner,
       board: this.theGame.board,
+      dimension: this.dimension,
     };
   }
 }
