@@ -48,6 +48,10 @@ export default class Gomoku {
     return this.players;
   }
 
+  isOccupied(x, y) {
+    return this.board[y][x] !== null;
+  }
+
   isMaxPlayers() {
     return this.getNumberOfPlayers() >= MAX_PLAYERS;
   }
@@ -66,7 +70,12 @@ export default class Gomoku {
   play(player, x, y) {
     const playerIndex = this.getPlayerIndex(player);
 
-    if (playerIndex < 0 || playerIndex !== this.currPlayer) return;
+    if (
+      playerIndex < 0 ||
+      playerIndex !== this.currPlayer ||
+      this.isOccupied(x, y)
+    )
+      return;
 
     this.board[y][x] = playerIndex;
     this.currPlayer = this.currPlayer === 0 ? 1 : 0;

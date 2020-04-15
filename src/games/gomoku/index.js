@@ -4,6 +4,7 @@ import {
   SUCCESS,
   NOT_YOUR_TURN,
   MAX_PLAYERS_REACHED,
+  SPACE_OCCUPIED,
 } from '../../common/codes';
 import Gomoku from './Gomoku';
 
@@ -88,8 +89,17 @@ export default class GomokuGame extends GameBase {
       const { x, y } = query;
 
       if (game.getCurrentPlayer() !== user) {
-        res.send({ code: NOT_YOUR_TURN, message: "It's not your turn!" });
-        return;
+        return res.send({
+          code: NOT_YOUR_TURN,
+          message: "It's not your turn.",
+        });
+      }
+
+      if (game.isOccupied(x, y)) {
+        return res.send({
+          code: SPACE_OCCUPIED,
+          message: 'This spot is occupied.',
+        });
       }
 
       game.play(user, x, y);
