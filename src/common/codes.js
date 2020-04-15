@@ -1,0 +1,6 @@
+export const SUCCESS = 'SUCCESS';
+export const NOT_FOUND = 'NOT_FOUND';
+export const PLAYER_NOT_FOUND = 'PLAYER_NOT_FOUND';
+export const MAX_PLAYERS_REACHED = 'MAX_PLAYERS_REACHED';
+export const NOT_YOUR_TURN = 'NOT_YOUR_TURN';
+export const NOT_AUTHORIZED = 'NOT_AUTHORIZED';
