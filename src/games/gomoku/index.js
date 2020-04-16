@@ -89,7 +89,8 @@ export default class GomokuGame extends GameBase {
 
     router.put('/play', validateGame, (req, res) => {
       const { game, user, query } = req;
-      const { x, y } = query;
+      const x = Number(query.x);
+      const y = Number(query.y);
 
       if (game.getCurrentPlayer() !== user) {
         return res.send({
