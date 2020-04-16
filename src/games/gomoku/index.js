@@ -38,8 +38,11 @@ export default class GomokuGame extends GameBase {
 
       if (!gameId) {
         gameId = `${this.getName()}_${Date.now()}`;
+
         const game = new Gomoku(gameId);
+
         this.games.set(gameId, game);
+
         game.addPlayer(user);
 
         return res.send({
@@ -60,8 +63,8 @@ export default class GomokuGame extends GameBase {
         }
 
         if (!hasPlayer) game.addPlayer(user);
+        else game.refreshPlayer(user);
 
-        game.updatePlayer(user);
         res.send({
           code: SUCCESS,
           id: gameId,
@@ -81,7 +84,7 @@ export default class GomokuGame extends GameBase {
         return res.send({ code: SUCCESS });
       }
 
-      res.send({ code: SUCCESS, update: game.getUpdate(user) });
+      res.send({ code: SUCCESS, updates: game.getUpdate(user) });
     });
 
     router.put('/play', validateGame, (req, res) => {
@@ -104,7 +107,7 @@ export default class GomokuGame extends GameBase {
 
       game.play(user, x, y);
 
-      res.send({ code: SUCCESS, update: game.getUpdate(user) });
+      res.send({ code: SUCCESS, updates: game.getUpdate(user) });
     });
   }
 }

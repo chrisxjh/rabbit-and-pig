@@ -11,7 +11,7 @@ export default class Gomoku {
 
   init() {
     this.currPlayer = 0;
-    this.resetUpdate();
+    this.updates = [[], []];
 
     this.board = new Array(this.dimension)
       .fill()
@@ -24,20 +24,11 @@ export default class Gomoku {
 
   restart() {
     this.init();
+    this.pushUpdate({ type: 'board', board: this.board });
   }
 
   getPlayerIndex(player) {
     return this.players.indexOf(player);
-  }
-
-  resetUpdate() {
-    this.shouldUpdate = [true, true];
-  }
-
-  updatePlayer(player) {
-    const index = this.getPlayerIndex(player);
-    if (index < 0) return;
-    this.shouldUpdate[index] = true;
   }
 
   hasPlayer(player) {
@@ -62,9 +53,26 @@ export default class Gomoku {
 
   addPlayer(player) {
     if (this.players.length >= MAX_PLAYERS) return;
-    this.players.push(player);
 
-    this.resetUpdate();
+    this.players.push(player);
+    this.refreshPlayer(player);
+  }
+
+  pushUpdate(update, playerIndex) {
+    if (playerIndex === undefined) {
+      this.updates[0].push(update);
+      this.updates[1].push(update);
+      return;
+    }
+
+    if (playerIndex < 0) return;
+    this.updates[playerIndex].push(update);
+  }
+
+  refreshPlayer(player) {
+    const playerIndex = this.getPlayerIndex(player);
+
+    this.pushUpdate({ type: 'board', board: this.board }, playerIndex);
   }
 
   play(player, x, y) {
@@ -79,7 +87,14 @@ export default class Gomoku {
 
     this.board[y][x] = playerIndex;
     this.currPlayer = this.currPlayer === 0 ? 1 : 0;
-    this.shouldUpdate[this.currPlayer] = true;
+
+    this.pushUpdate({
+      type: 'move',
+      player: player.getId(),
+      x,
+      y,
+      value: playerIndex,
+    });
   }
 
   getCurrentPlayer() {
@@ -88,23 +103,19 @@ export default class Gomoku {
 
   shouldPlayerUpdate(player) {
     const playerIndex = this.getPlayerIndex(player);
+
     if (playerIndex < 0) return false;
-
-    const result = this.shouldUpdate[playerIndex];
-    this.shouldUpdate[playerIndex] = false;
-
-    return result;
+    return this.updates[playerIndex].length > 0;
   }
 
   getUpdate(player) {
     const playerIndex = this.getPlayerIndex(player);
 
     if (playerIndex < -1) return null;
-    this.shouldUpdate[playerIndex] = false;
 
-    return {
-      board: this.board,
-      players: this.players.map((p) => p.toJson()),
-    };
+    const playerUpdates = this.updates[playerIndex].reverse();
+    this.updates[playerIndex] = [];
+
+    return playerUpdates;
   }
 }

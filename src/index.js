@@ -36,7 +36,7 @@ const validateUser = (req, res, next) => {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(logger);
+// app.use(logger);
 
 app.use('/game', validateUser, gameRouter);
 
