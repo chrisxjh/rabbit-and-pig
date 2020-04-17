@@ -5,6 +5,7 @@ export default class Gomoku {
     this.id = id;
     this.dimension = 19;
     this.players = [];
+    this.ended = false;
 
     this.init();
   }
@@ -95,6 +96,14 @@ export default class Gomoku {
       y,
       value: playerIndex,
     });
+  }
+
+  endGame() {
+    this.ended = true;
+  }
+
+  isEnded() {
+    return this.ended;
   }
 
   getCurrentPlayer() {

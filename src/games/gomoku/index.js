@@ -5,6 +5,7 @@ import {
   NOT_YOUR_TURN,
   MAX_PLAYERS_REACHED,
   SPACE_OCCUPIED,
+  GAME_ENDED,
 } from '../../common/codes';
 import Gomoku from './Gomoku';
 
@@ -21,8 +22,9 @@ export default class GomokuGame extends GameBase {
       const { gameId } = req.query;
 
       if (!this.games.has(gameId)) {
-        res.send({ code: NOT_FOUND, message: 'Game not found' });
-        return;
+        return res.send({ code: NOT_FOUND, message: 'Game not found' });
+      } else if (this.games.get(gameId).isEnded()) {
+        return res.send({ code: GAME_ENDED, message: 'Game is ended' });
       }
 
       req.game = this.games.get(gameId);
@@ -109,6 +111,13 @@ export default class GomokuGame extends GameBase {
       game.play(user, x, y);
 
       res.send({ code: SUCCESS, updates: game.getUpdate(user) });
+    });
+
+    router.delete('/end', validateGame, (req, res) => {
+      const { game } = req;
+
+      game.endGame();
+      res.send({ code: SUCCESS });
     });
   }
 }
